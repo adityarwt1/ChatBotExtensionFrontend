@@ -265,6 +265,7 @@ body {
     border: 1px solid #333;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    align-items: center;
 }
 
 .input-container:focus-within {

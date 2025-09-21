@@ -248,10 +248,15 @@ async function handleFileUpload(e) {
 async function handleLogout() {
   try {
     // Clear any local storage
-    chrome.storage.local.clear();
+    const response   = await fetch("http://localhost:3000/api/logout",{
+      method: "POST"
+    })
 
+    if(response.ok){
+
+      window.location.href = "signin.html";
+    }
     // Redirect to signin
-    window.location.href = "signin.html";
   } catch (error) {
     console.error("[ChatBot] Logout error:", error);
     window.location.href = "signin.html";
