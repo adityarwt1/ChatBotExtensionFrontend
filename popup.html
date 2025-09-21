@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ChatBot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>AI ChatBot</h1>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+        
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <div class="bot-message">
+                        <div class="message-content">
+                            Welcome! I'm your AI assistant. You can ask me questions or take a screenshot to analyze images.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <span>AI is thinking...</span>
+        </div>
+        
+        <!-- Screenshot Button (External) -->
+        <div class="screenshot-section">
+            <button id="screenshotBtn" class="external-screenshot-btn">
+                <div class="screenshot-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 16.8V9.2C3 8.0799 3 7.51984 3.21799 7.09202C3.40973 6.71569 3.71569 6.40973 4.09202 6.21799C4.51984 6 5.0799 6 6.2 6H7.25464C7.37758 6 7.43905 6 7.49576 5.9935C7.79166 5.95961 8.05705 5.79559 8.21969 5.54609C8.25086 5.49827 8.27836 5.44328 8.33333 5.33333C8.44329 5.11342 8.49827 5.00346 8.56062 4.90782C8.8859 4.40882 9.41668 4.08078 10.0085 4.01299C10.1219 4 10.2448 4 10.4907 4H13.5093C13.7552 4 13.8781 4 13.9915 4.01299C14.5833 4.08078 15.1141 4.40882 15.4394 4.90782C15.5017 5.00345 15.5567 5.11345 15.6667 5.33333C15.7216 5.44329 15.7491 5.49827 15.7803 5.54609C15.943 5.79559 16.2083 5.95961 16.5042 5.9935C16.561 6 16.6224 6 16.7454 6H17.8C18.9201 6 19.4802 6 19.908 6.21799C20.2843 6.40973 20.5903 6.71569 20.782 7.09202C21 7.51984 21 8.0799 21 9.2V16.8C21 17.9201 21 18.4802 20.782 18.908C20.5903 19.2843 20.2843 19.5903 19.908 19.782C19.4802 20 18.9201 20 17.8 20H6.2C5.0799 20 4.51984 20 4.09202 19.782C3.71569 19.5903 3.40973 19.2843 3.21799 18.908C3 18.4802 3 17.9201 3 16.8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="screenshot-text">Use current screenshot</span>
+            </button>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="Type your message here..." 
+                    rows="1"
+                ></textarea>
+                <div class="input-actions">
+                    <button id="sendBtn" class="action-btn send-btn" title="Send Message">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- File Upload (Hidden) -->
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+    </div>
+    
+    <script src="prompt.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>

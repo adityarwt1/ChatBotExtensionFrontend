@@ -1,0 +1,288 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: #0A0A0A;
+    width: 400px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #0A0A0A;
+}
+
+.signin-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    width: 100%;
+    max-width: 360px;
+    backdrop-filter: blur(20px);
+    position: relative;
+}
+
+.signin-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #007AFF 0%, #00D4FF 50%, #007AFF 100%);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.header {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 100%);
+    color: white;
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, #b3b3b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.header p {
+    opacity: 0.8;
+    font-size: 16px;
+    font-weight: 400;
+    color: #b3b3b3;
+}
+
+.signin-form {
+    padding: 40px 32px;
+    background: rgba(26, 26, 26, 0.95);
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    font-size: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-weight: 400;
+    backdrop-filter: blur(10px);
+}
+
+.input-group input::placeholder {
+    color: #666;
+    font-weight: 400;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #007AFF;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.signin-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
+    color: white;
+    border: none;
+    padding: 18px 32px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+}
+
+.signin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.signin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 122, 255, 0.4);
+}
+
+.signin-btn:hover::before {
+    opacity: 1;
+}
+
+.signin-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+}
+
+.signin-btn:disabled {
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.6;
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.1);
+}
+
+.btn-loader {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.loader-dot {
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    animation: bounce 1.4s ease-in-out infinite both;
+}
+
+.loader-dot:nth-child(1) { animation-delay: -0.32s; }
+.loader-dot:nth-child(2) { animation-delay: -0.16s; }
+.loader-dot:nth-child(3) { animation-delay: 0s; }
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0.8) translateY(0);
+        opacity: 0.7;
+    }
+    40% {
+        transform: scale(1.2) translateY(-8px);
+        opacity: 1;
+    }
+}
+
+.error-message {
+    background: rgba(220, 53, 69, 0.1);
+    color: #ff6b6b;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-top: 20px;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    font-weight: 500;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.footer {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 24px 32px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+.footer p {
+    color: #b3b3b3;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* Focus states for accessibility */
+.signin-btn:focus {
+    outline: 2px solid rgba(0, 122, 255, 0.5);
+    outline-offset: 2px;
+}
+
+.input-group input:focus {
+    outline: none;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Additional professional styling */
+.signin-card {
+    position: relative;
+    z-index: 1;
+}
+
+.signin-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+    border-radius: 22px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.signin-card:hover::after {
+    opacity: 1;
+}

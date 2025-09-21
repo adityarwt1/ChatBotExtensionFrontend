@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "AI ChatBot Chrome Extension",
+  "version": "1.0",
+  "description": "Professional AI-powered chatbot with image analysis capabilities",
+  "permissions": ["activeTab", "storage", "tabs", "scripting"],
+  "host_permissions": ["http://localhost:3000/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI ChatBot"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

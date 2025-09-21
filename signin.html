@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI ChatBot - Sign In</title>
+    <link rel="stylesheet" href="signStyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="signin-card">
+        <div class="header">
+          <h1>AI ChatBot</h1>
+          <p>Sign in to start chatting</p>
+        </div>
+
+        <form class="signin-form" id="signinForm">
+          <div class="input-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" id="authbtn" class="signin-btn">
+            <span class="btn-text">Sign In</span>
+            <div class="btn-loader" style="display: none">
+              <div class="loader-dot"></div>
+              <div class="loader-dot"></div>
+              <div class="loader-dot"></div>
+            </div>
+          </button>
+        </form>
+
+        <div
+          id="errorMessage"
+          class="error-message"
+          style="display: none"
+        ></div>
+
+        <div class="footer">
+          <p>Don't have an account? Just enter your details to create one!</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="signin.js"></script>
+  </body>
+</html>
