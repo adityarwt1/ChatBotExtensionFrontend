@@ -21,7 +21,7 @@ signinBtn.addEventListener("click", async (e) => {
   clearError();
 
   try {
-    const response = await fetch("http://localhost:3000/api/auth/signin", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/auth/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ function clearError() {
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     console.log("[ChatBot] Checking existing authentication...");
-    const response = await fetch("http://localhost:3000/api/auth/checkauth", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/auth/checkauth", {
       method: "POST",
       credentials: "include",
     });

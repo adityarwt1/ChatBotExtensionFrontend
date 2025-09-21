@@ -2,7 +2,7 @@
 
 async function promtResult(prompt) {
   try {
-    const response = await fetch("http://localhost:3000/api/chatbot", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/chatbot", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ async function imageResult(imageFIle) {
     const formData = new FormData();
 
     formData.append("file", imageFIle);
-    const response = await fetch("http://localhost:3000/api/image/describe", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/image/describe", {
       method: "POST",
       body: formData,
     });

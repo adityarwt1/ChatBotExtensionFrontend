@@ -3,7 +3,7 @@
   try {
     console.log("[v0] Checking authentication status...")
 
-    const response = await fetch("http://localhost:3000/api/auth/checkauth", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/auth/checkauth", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -61,7 +61,7 @@ async function signInWithGoogle() {
     console.log("[v0] Got auth token, sending to backend...")
 
     // Send token to backend for verification
-    const response = await fetch("http://localhost:3000/api/auth/google", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -116,7 +116,7 @@ async function signOut() {
     })
 
     // Call backend sign out
-    const response = await fetch("http://localhost:3000/api/auth/signout", {
+    const response = await fetch("https://chat-bot-extension-backend.vercel.app/api/auth/signout", {
       method: "POST",
       credentials: "include",
     })
