@@ -14,12 +14,12 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"],
+      "js": ["src/js/content.js"],
       "run_at": "document_end"
     }
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/html/popup.html",
     "default_title": "AI ChatBot",
     "default_icon": {
       "16": "icons/icon-16.png",
@@ -29,6 +29,6 @@
     }
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/js/background.js"
   }
 }
