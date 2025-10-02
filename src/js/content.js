@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "getPageContent":
       handleGetPageContent(sendResponse);
-      return true; // Keep message channel open for async response
+      return true;
 
     case "captureScreen":
       handleCaptureScreen(sendResponse);
@@ -13,6 +13,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     case "getDivText":
       handleGetDivText(sendResponse);
+      return true;
+
+    case "extractLinks":
+      handleExtractLinks(sendResponse);
+      return true;
+
+    case "getPageInfo":
+      handleGetPageInfo(sendResponse);
       return true;
 
     default:
@@ -130,7 +138,86 @@ async function getCurrentTab() {
   return tab;
 }
 
-// Auto-extract page content when page loads
+function handleExtractLinks(sendResponse) {
+  try {
+    const links = Array.from(document.querySelectorAll('a[href]'));
+    const extractedLinks = links
+      .map(link => ({
+        text: link.innerText.trim() || link.title || 'No text',
+        url: link.href,
+        domain: new URL(link.href).hostname
+      }))
+      .filter(link => link.url && !link.url.startsWith('javascript:'))
+      .slice(0, 100);
+
+    const linksByDomain = {};
+    extractedLinks.forEach(link => {
+      if (!linksByDomain[link.domain]) {
+        linksByDomain[link.domain] = [];
+      }
+      linksByDomain[link.domain].push(link);
+    });
+
+    sendResponse({
+      success: true,
+      totalLinks: extractedLinks.length,
+      links: extractedLinks,
+      linksByDomain: linksByDomain
+    });
+  } catch (error) {
+    console.error("Error extracting links:", error);
+    sendResponse({
+      success: false,
+      error: error.message
+    });
+  }
+}
+
+function handleGetPageInfo(sendResponse) {
+  try {
+    const images = document.querySelectorAll('img');
+    const videos = document.querySelectorAll('video');
+    const headings = {
+      h1: document.querySelectorAll('h1').length,
+      h2: document.querySelectorAll('h2').length,
+      h3: document.querySelectorAll('h3').length,
+      h4: document.querySelectorAll('h4').length,
+      h5: document.querySelectorAll('h5').length,
+      h6: document.querySelectorAll('h6').length
+    };
+
+    const pageInfo = {
+      title: document.title,
+      url: window.location.href,
+      domain: window.location.hostname,
+      path: window.location.pathname,
+      description: document.querySelector('meta[name="description"]')?.content || 'No description',
+      keywords: document.querySelector('meta[name="keywords"]')?.content || 'No keywords',
+      author: document.querySelector('meta[name="author"]')?.content || 'Unknown',
+      charset: document.characterSet,
+      language: document.documentElement.lang || 'Not specified',
+      lastModified: document.lastModified,
+      wordCount: document.body.innerText.split(/\s+/).length,
+      imageCount: images.length,
+      videoCount: videos.length,
+      linkCount: document.querySelectorAll('a[href]').length,
+      headings: headings,
+      viewport: document.querySelector('meta[name="viewport"]')?.content || 'Not specified'
+    };
+
+    sendResponse({
+      success: true,
+      pageInfo: pageInfo
+    });
+  } catch (error) {
+    console.error("Error getting page info:", error);
+    sendResponse({
+      success: false,
+      error: error.message
+    });
+  }
+}
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
     console.log("Page loaded, ready for content extraction");

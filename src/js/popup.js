@@ -3,6 +3,9 @@ const chatMessages = document.getElementById("chatMessages");
 const messageInput = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 const screenshotBtn = document.getElementById("screenshotBtn");
+const summarizeBtn = document.getElementById("summarizeBtn");
+const extractLinksBtn = document.getElementById("extractLinksBtn");
+const pageInfoBtn = document.getElementById("pageInfoBtn");
 const loadingIndicator = document.getElementById("loadingIndicator");
 const logoutBtn = document.getElementById("logoutBtn");
 const fileInput = document.getElementById("fileInput");
@@ -114,6 +117,9 @@ async function checkAuth() {
 function setupEventListeners() {
   sendBtn.addEventListener("click", handleSendMessage);
   screenshotBtn.addEventListener("click", handleScreenshot);
+  summarizeBtn.addEventListener("click", handleSummarizePage);
+  extractLinksBtn.addEventListener("click", handleExtractLinks);
+  pageInfoBtn.addEventListener("click", handleGetPageInfo);
   logoutBtn.addEventListener("click", handleLogout);
 
   messageInput.addEventListener("keypress", (e) => {
@@ -269,10 +275,16 @@ function showLoading(show) {
     loadingIndicator.style.display = "flex";
     sendBtn.disabled = true;
     screenshotBtn.disabled = true;
+    summarizeBtn.disabled = true;
+    extractLinksBtn.disabled = true;
+    pageInfoBtn.disabled = true;
   } else {
     loadingIndicator.style.display = "none";
     sendBtn.disabled = false;
     screenshotBtn.disabled = false;
+    summarizeBtn.disabled = false;
+    extractLinksBtn.disabled = false;
+    pageInfoBtn.disabled = false;
   }
 }
 
@@ -316,5 +328,137 @@ async function imageResult(imageFile) {
   } catch (error) {
     console.error("[ChatBot] Image analysis error:", error);
     return null;
+  }
+}
+
+async function handleSummarizePage() {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    addMessage("Summarizing current page...", "user");
+    showLoading(true);
+
+    chrome.tabs.sendMessage(tab.id, { action: "getPageContent" }, async (response) => {
+      if (chrome.runtime.lastError) {
+        console.error("[ChatBot] Error:", chrome.runtime.lastError);
+        addMessage("Could not access page content. Please refresh the page and try again.", "bot");
+        showLoading(false);
+        return;
+      }
+
+      if (response && response.success) {
+        const summaryPrompt = `Please provide a comprehensive summary of this webpage:\n\nTitle: ${response.metadata.title}\nURL: ${response.metadata.url}\n\nContent:\n${response.content}\n\nProvide a clear, structured summary highlighting the main points.`;
+
+        const summary = await promptResult(summaryPrompt);
+
+        if (summary) {
+          addMessage(summary, "bot");
+        } else {
+          addMessage("Sorry, I couldn't generate a summary. Please try again.", "bot");
+        }
+      } else {
+        addMessage("Could not extract page content.", "bot");
+      }
+
+      showLoading(false);
+    });
+  } catch (error) {
+    console.error("[ChatBot] Summarize error:", error);
+    addMessage("Error summarizing page. Please try again.", "bot");
+    showLoading(false);
+  }
+}
+
+async function handleExtractLinks() {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    addMessage("Extracting links from page...", "user");
+    showLoading(true);
+
+    chrome.tabs.sendMessage(tab.id, { action: "extractLinks" }, async (response) => {
+      if (chrome.runtime.lastError) {
+        console.error("[ChatBot] Error:", chrome.runtime.lastError);
+        addMessage("Could not access page. Please refresh and try again.", "bot");
+        showLoading(false);
+        return;
+      }
+
+      if (response && response.success) {
+        let message = `**Found ${response.totalLinks} links on this page**\n\n`;
+
+        const domains = Object.keys(response.linksByDomain).slice(0, 10);
+        message += "**Links by domain:**\n";
+
+        domains.forEach(domain => {
+          const count = response.linksByDomain[domain].length;
+          message += `* ${domain}: ${count} link${count > 1 ? 's' : ''}\n`;
+        });
+
+        if (response.totalLinks > 10) {
+          message += `\n*Showing top 10 domains. Total: ${response.totalLinks} links found.*`;
+        }
+
+        addMessage(message, "bot");
+      } else {
+        addMessage("Could not extract links from page.", "bot");
+      }
+
+      showLoading(false);
+    });
+  } catch (error) {
+    console.error("[ChatBot] Extract links error:", error);
+    addMessage("Error extracting links. Please try again.", "bot");
+    showLoading(false);
+  }
+}
+
+async function handleGetPageInfo() {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    addMessage("Getting page information...", "user");
+    showLoading(true);
+
+    chrome.tabs.sendMessage(tab.id, { action: "getPageInfo" }, (response) => {
+      if (chrome.runtime.lastError) {
+        console.error("[ChatBot] Error:", chrome.runtime.lastError);
+        addMessage("Could not access page. Please refresh and try again.", "bot");
+        showLoading(false);
+        return;
+      }
+
+      if (response && response.success) {
+        const info = response.pageInfo;
+        let message = `**Page Information**\n\n`;
+        message += `**Title:** ${info.title}\n`;
+        message += `**URL:** ${info.url}\n`;
+        message += `**Domain:** ${info.domain}\n`;
+        message += `**Language:** ${info.language}\n\n`;
+
+        message += `**Content Stats:**\n`;
+        message += `* Words: ${info.wordCount}\n`;
+        message += `* Links: ${info.linkCount}\n`;
+        message += `* Images: ${info.imageCount}\n`;
+        message += `* Videos: ${info.videoCount}\n\n`;
+
+        message += `**Headings:**\n`;
+        message += `* H1: ${info.headings.h1}, H2: ${info.headings.h2}, H3: ${info.headings.h3}\n\n`;
+
+        if (info.description && info.description !== 'No description') {
+          message += `**Description:** ${info.description}\n`;
+        }
+
+        addMessage(message, "bot");
+      } else {
+        addMessage("Could not get page information.", "bot");
+      }
+
+      showLoading(false);
+    });
+  } catch (error) {
+    console.error("[ChatBot] Get page info error:", error);
+    addMessage("Error getting page information. Please try again.", "bot");
+    showLoading(false);
   }
 }
