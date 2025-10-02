@@ -1,3 +1,7 @@
+/* Collapsible Quick Actions */
+.quick-actions-grid[style*="display: none"] {
+    display: none !important;
+}
 * {
     margin: 0;
     padding: 0;

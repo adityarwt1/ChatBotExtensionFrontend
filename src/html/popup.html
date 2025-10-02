@@ -41,10 +41,11 @@
         
         <!-- Quick Actions Section -->
         <div class="quick-actions-section">
-            <div class="quick-actions-header">
-                <h3>Quick Actions</h3>
+            <div class="quick-actions-header" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" id="quickActionsToggle">
+                <h3 style="margin: 0;">Quick Actions</h3>
+                <span id="quickActionsArrow" style="font-size: 18px; user-select: none; transition: transform 0.2s;">▼</span>
             </div>
-            <div class="quick-actions-grid">
+            <div class="quick-actions-grid" id="quickActionsContent">
                 <button id="screenshotBtn" class="action-card">
                     <div class="action-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -106,5 +107,22 @@
     
     <script src="../js/prompt.js"></script>
     <script src="../js/popup.js"></script>
+    <script>
+    // Collapsible Quick Actions
+    const quickActionsToggle = document.getElementById('quickActionsToggle');
+    const quickActionsContent = document.getElementById('quickActionsContent');
+    const quickActionsArrow = document.getElementById('quickActionsArrow');
+    let quickActionsCollapsed = false;
+    quickActionsToggle.addEventListener('click', function() {
+        quickActionsCollapsed = !quickActionsCollapsed;
+        if (quickActionsCollapsed) {
+            quickActionsContent.style.display = 'none';
+            quickActionsArrow.style.transform = 'rotate(-90deg)';
+        } else {
+            quickActionsContent.style.display = '';
+            quickActionsArrow.style.transform = '';
+        }
+    });
+    </script>
 </body>
 </html>
